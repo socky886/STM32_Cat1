@@ -1,0 +1,176 @@
+ARM GAS  C:\Users\andywei\AppData\Local\Temp\ccd5B4ll.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"CAT_Com.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.Tx_Byte_To_Cat,"ax",%progbits
+  18              		.align	1
+  19              		.global	Tx_Byte_To_Cat
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv4-sp-d16
+  26              	Tx_Byte_To_Cat:
+  27              	.LVL0:
+  28              	.LFB132:
+  29              		.file 1 "Src/CAT_Com.c"
+   1:Src/CAT_Com.c **** // CAT_Com.cpp: implementation of the CCAT_Com class.
+   2:Src/CAT_Com.c **** //
+   3:Src/CAT_Com.c **** //////////////////////////////////////////////////////////////////////
+   4:Src/CAT_Com.c **** 
+   5:Src/CAT_Com.c **** 
+   6:Src/CAT_Com.c **** #include "CAT_Com.h"
+   7:Src/CAT_Com.c **** #include "main.h"
+   8:Src/CAT_Com.c **** 
+   9:Src/CAT_Com.c **** // huart2 is used for Cat
+  10:Src/CAT_Com.c **** extern UART_HandleTypeDef huart2;
+  11:Src/CAT_Com.c **** 
+  12:Src/CAT_Com.c **** /**
+  13:Src/CAT_Com.c ****  * @brief Tx one byte to CAT module
+  14:Src/CAT_Com.c ****  * 
+  15:Src/CAT_Com.c ****  * @param x 
+  16:Src/CAT_Com.c ****  */
+  17:Src/CAT_Com.c **** void Tx_Byte_To_Cat(unsigned char x)
+  18:Src/CAT_Com.c **** {
+  30              		.loc 1 18 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 8
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		.loc 1 18 1 is_stmt 0 view .LVU1
+  35 0000 00B5     		push	{lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 4
+  38              		.cfi_offset 14, -4
+  39 0002 83B0     		sub	sp, sp, #12
+  40              	.LCFI1:
+ARM GAS  C:\Users\andywei\AppData\Local\Temp\ccd5B4ll.s 			page 2
+
+
+  41              		.cfi_def_cfa_offset 16
+  42 0004 8DF80700 		strb	r0, [sp, #7]
+  19:Src/CAT_Com.c ****     HAL_UART_Transmit(&huart2, &x, 1, 1000);
+  43              		.loc 1 19 5 is_stmt 1 view .LVU2
+  44 0008 4FF47A73 		mov	r3, #1000
+  45 000c 0122     		movs	r2, #1
+  46 000e 0DF10701 		add	r1, sp, #7
+  47 0012 0348     		ldr	r0, .L3
+  48              	.LVL1:
+  49              		.loc 1 19 5 is_stmt 0 view .LVU3
+  50 0014 FFF7FEFF 		bl	HAL_UART_Transmit
+  51              	.LVL2:
+  20:Src/CAT_Com.c **** }
+  52              		.loc 1 20 1 view .LVU4
+  53 0018 03B0     		add	sp, sp, #12
+  54              	.LCFI2:
+  55              		.cfi_def_cfa_offset 4
+  56              		@ sp needed
+  57 001a 5DF804FB 		ldr	pc, [sp], #4
+  58              	.L4:
+  59 001e 00BF     		.align	2
+  60              	.L3:
+  61 0020 00000000 		.word	huart2
+  62              		.cfi_endproc
+  63              	.LFE132:
+  65              		.section	.text.Tx_String_To_Cat,"ax",%progbits
+  66              		.align	1
+  67              		.global	Tx_String_To_Cat
+  68              		.syntax unified
+  69              		.thumb
+  70              		.thumb_func
+  71              		.fpu fpv4-sp-d16
+  73              	Tx_String_To_Cat:
+  74              	.LVL3:
+  75              	.LFB133:
+  21:Src/CAT_Com.c **** /**
+  22:Src/CAT_Com.c ****  * @brief Tx string to Cat module
+  23:Src/CAT_Com.c ****  * 
+  24:Src/CAT_Com.c ****  * @param p 
+  25:Src/CAT_Com.c ****  */
+  26:Src/CAT_Com.c **** void Tx_String_To_Cat(char *p)
+  27:Src/CAT_Com.c **** {
+  76              		.loc 1 27 1 is_stmt 1 view -0
+  77              		.cfi_startproc
+  78              		@ args = 0, pretend = 0, frame = 0
+  79              		@ frame_needed = 0, uses_anonymous_args = 0
+  80              		.loc 1 27 1 is_stmt 0 view .LVU6
+  81 0000 10B5     		push	{r4, lr}
+  82              	.LCFI3:
+  83              		.cfi_def_cfa_offset 8
+  84              		.cfi_offset 4, -8
+  85              		.cfi_offset 14, -4
+  86 0002 0446     		mov	r4, r0
+  28:Src/CAT_Com.c ****     while (*p != NULL)
+  87              		.loc 1 28 5 is_stmt 1 view .LVU7
+  88              	.LVL4:
+  89              	.L6:
+ARM GAS  C:\Users\andywei\AppData\Local\Temp\ccd5B4ll.s 			page 3
+
+
+  90              		.loc 1 28 11 view .LVU8
+  91              		.loc 1 28 12 is_stmt 0 view .LVU9
+  92 0004 2078     		ldrb	r0, [r4]	@ zero_extendqisi2
+  93              		.loc 1 28 11 view .LVU10
+  94 0006 18B1     		cbz	r0, .L9
+  29:Src/CAT_Com.c ****     {
+  30:Src/CAT_Com.c ****         Tx_Byte_To_Cat(*p++);
+  95              		.loc 1 30 9 is_stmt 1 view .LVU11
+  96              		.loc 1 30 26 is_stmt 0 view .LVU12
+  97 0008 0134     		adds	r4, r4, #1
+  98              	.LVL5:
+  99              		.loc 1 30 9 view .LVU13
+ 100 000a FFF7FEFF 		bl	Tx_Byte_To_Cat
+ 101              	.LVL6:
+ 102 000e F9E7     		b	.L6
+ 103              	.L9:
+  31:Src/CAT_Com.c ****     }
+  32:Src/CAT_Com.c **** }
+ 104              		.loc 1 32 1 view .LVU14
+ 105 0010 10BD     		pop	{r4, pc}
+ 106              		.loc 1 32 1 view .LVU15
+ 107              		.cfi_endproc
+ 108              	.LFE133:
+ 110              		.text
+ 111              	.Letext0:
+ 112              		.file 2 "c:\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\include\\machine\\_defau
+ 113              		.file 3 "c:\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 114              		.file 4 "Drivers/CMSIS/Include/core_cm4.h"
+ 115              		.file 5 "Drivers/CMSIS/Device/ST/STM32L4xx/Include/system_stm32l4xx.h"
+ 116              		.file 6 "Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l476xx.h"
+ 117              		.file 7 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_def.h"
+ 118              		.file 8 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_dma.h"
+ 119              		.file 9 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_flash.h"
+ 120              		.file 10 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h"
+ 121              		.file 11 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h"
+ 122              		.file 12 "c:\\gnu arm embedded toolchain\\9 2020-q2-update\\lib\\gcc\\arm-none-eabi\\9.3.1\\includ
+ 123              		.file 13 "c:\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 124              		.file 14 "c:\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
+ 125              		.file 15 "c:\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
+ARM GAS  C:\Users\andywei\AppData\Local\Temp\ccd5B4ll.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 CAT_Com.c
+C:\Users\andywei\AppData\Local\Temp\ccd5B4ll.s:18     .text.Tx_Byte_To_Cat:00000000 $t
+C:\Users\andywei\AppData\Local\Temp\ccd5B4ll.s:26     .text.Tx_Byte_To_Cat:00000000 Tx_Byte_To_Cat
+C:\Users\andywei\AppData\Local\Temp\ccd5B4ll.s:61     .text.Tx_Byte_To_Cat:00000020 $d
+C:\Users\andywei\AppData\Local\Temp\ccd5B4ll.s:66     .text.Tx_String_To_Cat:00000000 $t
+C:\Users\andywei\AppData\Local\Temp\ccd5B4ll.s:73     .text.Tx_String_To_Cat:00000000 Tx_String_To_Cat
+
+UNDEFINED SYMBOLS
+HAL_UART_Transmit
+huart2

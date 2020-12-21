@@ -1,0 +1,572 @@
+ARM GAS  C:\Users\andywei\AppData\Local\Temp\cc38CnnP.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"trans_recieve_buff_control.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.Modbus_Master_RB_Initialize,"ax",%progbits
+  18              		.align	1
+  19              		.global	Modbus_Master_RB_Initialize
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv4-sp-d16
+  26              	Modbus_Master_RB_Initialize:
+  27              	.LFB135:
+  28              		.file 1 "Src/Modbus_Master/trans_recieve_buff_control.c"
+   1:Src/Modbus_Master/trans_recieve_buff_control.c **** #include "trans_recieve_buff_control.h"
+   2:Src/Modbus_Master/trans_recieve_buff_control.c **** #include "ringbuffer.h"
+   3:Src/Modbus_Master/trans_recieve_buff_control.c **** 
+   4:Src/Modbus_Master/trans_recieve_buff_control.c **** RingBuffer  m_Modbus_Master_RX_RingBuff;
+   5:Src/Modbus_Master/trans_recieve_buff_control.c **** uint8_t     m_Modbus_Master_RX_Buff[200];
+   6:Src/Modbus_Master/trans_recieve_buff_control.c **** 
+   7:Src/Modbus_Master/trans_recieve_buff_control.c **** extern UART_HandleTypeDef huart2;
+   8:Src/Modbus_Master/trans_recieve_buff_control.c **** /**
+   9:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @brief  ³õÊ¼»¯ÖÐ¶Ï½ÓÊÕµÄµÄringbuffer»·ÐÎ¶ÓÁÐÅäÖÃ,ÖÐ¶Ï½ÓÊÕµÄ×Ö½Ú¶¼ÓÃm_Modbus_Master_RX_RingBuff¸
+  10:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @param
+  11:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @note
+  12:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @retval void
+  13:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @author xiaodaqi
+  14:Src/Modbus_Master/trans_recieve_buff_control.c ****   */
+  15:Src/Modbus_Master/trans_recieve_buff_control.c **** uint8_t Modbus_Master_RB_Initialize(void)
+  16:Src/Modbus_Master/trans_recieve_buff_control.c **** {
+  29              		.loc 1 16 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 08B5     		push	{r3, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 3, -8
+  37              		.cfi_offset 14, -4
+  17:Src/Modbus_Master/trans_recieve_buff_control.c **** 	/*³õÊ¼»¯ringbufferÏà¹ØµÄÅäÖÃ*/
+  18:Src/Modbus_Master/trans_recieve_buff_control.c **** 	rbInitialize(&m_Modbus_Master_RX_RingBuff, m_Modbus_Master_RX_Buff, sizeof(m_Modbus_Master_RX_Buff
+  38              		.loc 1 18 2 view .LVU1
+  39 0002 C822     		movs	r2, #200
+  40 0004 0249     		ldr	r1, .L3
+ARM GAS  C:\Users\andywei\AppData\Local\Temp\cc38CnnP.s 			page 2
+
+
+  41 0006 0348     		ldr	r0, .L3+4
+  42 0008 FFF7FEFF 		bl	rbInitialize
+  43              	.LVL0:
+  19:Src/Modbus_Master/trans_recieve_buff_control.c **** 	return 1 ;
+  44              		.loc 1 19 2 view .LVU2
+  20:Src/Modbus_Master/trans_recieve_buff_control.c **** }
+  45              		.loc 1 20 1 is_stmt 0 view .LVU3
+  46 000c 0120     		movs	r0, #1
+  47 000e 08BD     		pop	{r3, pc}
+  48              	.L4:
+  49              		.align	2
+  50              	.L3:
+  51 0010 00000000 		.word	m_Modbus_Master_RX_Buff
+  52 0014 00000000 		.word	m_Modbus_Master_RX_RingBuff
+  53              		.cfi_endproc
+  54              	.LFE135:
+  56              		.section	.text.Modbus_Master_Rece_Flush,"ax",%progbits
+  57              		.align	1
+  58              		.global	Modbus_Master_Rece_Flush
+  59              		.syntax unified
+  60              		.thumb
+  61              		.thumb_func
+  62              		.fpu fpv4-sp-d16
+  64              	Modbus_Master_Rece_Flush:
+  65              	.LFB136:
+  21:Src/Modbus_Master/trans_recieve_buff_control.c **** 
+  22:Src/Modbus_Master/trans_recieve_buff_control.c **** 
+  23:Src/Modbus_Master/trans_recieve_buff_control.c **** /**
+  24:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @brief  Çå³ý»·ÐÎ¶ÓÁÐ
+  25:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @param
+  26:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @note
+  27:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @retval void
+  28:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @author xiaodaqi
+  29:Src/Modbus_Master/trans_recieve_buff_control.c ****   */
+  30:Src/Modbus_Master/trans_recieve_buff_control.c **** uint8_t Modbus_Master_Rece_Flush(void)
+  31:Src/Modbus_Master/trans_recieve_buff_control.c **** {
+  66              		.loc 1 31 1 is_stmt 1 view -0
+  67              		.cfi_startproc
+  68              		@ args = 0, pretend = 0, frame = 0
+  69              		@ frame_needed = 0, uses_anonymous_args = 0
+  70 0000 08B5     		push	{r3, lr}
+  71              	.LCFI1:
+  72              		.cfi_def_cfa_offset 8
+  73              		.cfi_offset 3, -8
+  74              		.cfi_offset 14, -4
+  32:Src/Modbus_Master/trans_recieve_buff_control.c ****   rbClear(&m_Modbus_Master_RX_RingBuff);
+  75              		.loc 1 32 3 view .LVU5
+  76 0002 0248     		ldr	r0, .L7
+  77 0004 FFF7FEFF 		bl	rbClear
+  78              	.LVL1:
+  33:Src/Modbus_Master/trans_recieve_buff_control.c **** }
+  79              		.loc 1 33 1 is_stmt 0 view .LVU6
+  80 0008 08BD     		pop	{r3, pc}
+  81              	.L8:
+  82 000a 00BF     		.align	2
+  83              	.L7:
+  84 000c 00000000 		.word	m_Modbus_Master_RX_RingBuff
+ARM GAS  C:\Users\andywei\AppData\Local\Temp\cc38CnnP.s 			page 3
+
+
+  85              		.cfi_endproc
+  86              	.LFE136:
+  88              		.section	.text.Modbus_Master_Rece_Available,"ax",%progbits
+  89              		.align	1
+  90              		.global	Modbus_Master_Rece_Available
+  91              		.syntax unified
+  92              		.thumb
+  93              		.thumb_func
+  94              		.fpu fpv4-sp-d16
+  96              	Modbus_Master_Rece_Available:
+  97              	.LFB137:
+  34:Src/Modbus_Master/trans_recieve_buff_control.c **** /**
+  35:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @brief  ÅÐ¶ÏGPSµÄringbufferÀïÃæÊÇ·ñÓÐÉÐÎ´´¦ÀíµÄ×Ö½Ú
+  36:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @param
+  37:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @note
+  38:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @retval void
+  39:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @author xiaodaqi
+  40:Src/Modbus_Master/trans_recieve_buff_control.c ****   */
+  41:Src/Modbus_Master/trans_recieve_buff_control.c **** uint8_t Modbus_Master_Rece_Available(void)
+  42:Src/Modbus_Master/trans_recieve_buff_control.c **** {
+  98              		.loc 1 42 1 is_stmt 1 view -0
+  99              		.cfi_startproc
+ 100              		@ args = 0, pretend = 0, frame = 0
+ 101              		@ frame_needed = 0, uses_anonymous_args = 0
+ 102 0000 08B5     		push	{r3, lr}
+ 103              	.LCFI2:
+ 104              		.cfi_def_cfa_offset 8
+ 105              		.cfi_offset 3, -8
+ 106              		.cfi_offset 14, -4
+  43:Src/Modbus_Master/trans_recieve_buff_control.c **** 	/*Èç¹ûÊý¾Ý°übufferÀïÃæÒç³öÁË£¬ÔòÇåÁã£¬ÖØÐÂ¼ÆÊý*/
+  44:Src/Modbus_Master/trans_recieve_buff_control.c **** 		if(m_Modbus_Master_RX_RingBuff.flagOverflow==1)
+ 107              		.loc 1 44 3 view .LVU8
+ 108              		.loc 1 44 33 is_stmt 0 view .LVU9
+ 109 0002 074B     		ldr	r3, .L13
+ 110 0004 9B7C     		ldrb	r3, [r3, #18]	@ zero_extendqisi2
+ 111              		.loc 1 44 5 view .LVU10
+ 112 0006 012B     		cmp	r3, #1
+ 113 0008 06D0     		beq	.L12
+ 114              	.L10:
+  45:Src/Modbus_Master/trans_recieve_buff_control.c **** 		{
+  46:Src/Modbus_Master/trans_recieve_buff_control.c **** 			rbClear(&m_Modbus_Master_RX_RingBuff);
+  47:Src/Modbus_Master/trans_recieve_buff_control.c **** 		}
+  48:Src/Modbus_Master/trans_recieve_buff_control.c **** 	return !rbIsEmpty(&m_Modbus_Master_RX_RingBuff);
+ 115              		.loc 1 48 2 is_stmt 1 view .LVU11
+ 116              		.loc 1 48 10 is_stmt 0 view .LVU12
+ 117 000a 0548     		ldr	r0, .L13
+ 118 000c FFF7FEFF 		bl	rbIsEmpty
+ 119              	.LVL2:
+  49:Src/Modbus_Master/trans_recieve_buff_control.c **** }
+ 120              		.loc 1 49 1 view .LVU13
+ 121 0010 B0FA80F0 		clz	r0, r0
+ 122 0014 4009     		lsrs	r0, r0, #5
+ 123 0016 08BD     		pop	{r3, pc}
+ 124              	.L12:
+  46:Src/Modbus_Master/trans_recieve_buff_control.c **** 		}
+ 125              		.loc 1 46 4 is_stmt 1 view .LVU14
+ 126 0018 0148     		ldr	r0, .L13
+ARM GAS  C:\Users\andywei\AppData\Local\Temp\cc38CnnP.s 			page 4
+
+
+ 127 001a FFF7FEFF 		bl	rbClear
+ 128              	.LVL3:
+ 129 001e F4E7     		b	.L10
+ 130              	.L14:
+ 131              		.align	2
+ 132              	.L13:
+ 133 0020 00000000 		.word	m_Modbus_Master_RX_RingBuff
+ 134              		.cfi_endproc
+ 135              	.LFE137:
+ 137              		.section	.text.Modbus_Master_GetByte,"ax",%progbits
+ 138              		.align	1
+ 139              		.global	Modbus_Master_GetByte
+ 140              		.syntax unified
+ 141              		.thumb
+ 142              		.thumb_func
+ 143              		.fpu fpv4-sp-d16
+ 145              	Modbus_Master_GetByte:
+ 146              	.LVL4:
+ 147              	.LFB138:
+  50:Src/Modbus_Master/trans_recieve_buff_control.c **** 
+  51:Src/Modbus_Master/trans_recieve_buff_control.c **** /**************************************************************************************************
+  52:Src/Modbus_Master/trans_recieve_buff_control.c **** /*ÏÂÃæÊÇÓëÓ²¼þ½Ó¿Ú²ãÏà¹ØÁªµÄ²¿·Ö£¬¸ù¾Ý²»Í¬´¦ÀíÆ÷µÄ´¦Àí·½Ê½½øÐÐÒÆÖ²*/
+  53:Src/Modbus_Master/trans_recieve_buff_control.c **** /**
+  54:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @brief  »ñÈ¡½ÓÊÕ¼Ä´æÆ÷ÀïÃæµÄÊýÖµ
+  55:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @param
+  56:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @note
+  57:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @retval void
+  58:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @author xiaodaqi
+  59:Src/Modbus_Master/trans_recieve_buff_control.c ****   */
+  60:Src/Modbus_Master/trans_recieve_buff_control.c **** uint8_t Modbus_Master_GetByte(uint8_t  *getbyte)
+  61:Src/Modbus_Master/trans_recieve_buff_control.c **** {
+ 148              		.loc 1 61 1 view -0
+ 149              		.cfi_startproc
+ 150              		@ args = 0, pretend = 0, frame = 0
+ 151              		@ frame_needed = 0, uses_anonymous_args = 0
+ 152              		.loc 1 61 1 is_stmt 0 view .LVU16
+ 153 0000 08B5     		push	{r3, lr}
+ 154              	.LCFI3:
+ 155              		.cfi_def_cfa_offset 8
+ 156              		.cfi_offset 3, -8
+ 157              		.cfi_offset 14, -4
+ 158 0002 0146     		mov	r1, r0
+  62:Src/Modbus_Master/trans_recieve_buff_control.c ****   if(HAL_UART_Receive (&huart2 ,(uint8_t *)getbyte,1,0x01) != HAL_OK )
+ 159              		.loc 1 62 3 is_stmt 1 view .LVU17
+ 160              		.loc 1 62 6 is_stmt 0 view .LVU18
+ 161 0004 0123     		movs	r3, #1
+ 162 0006 1A46     		mov	r2, r3
+ 163 0008 0248     		ldr	r0, .L18
+ 164              	.LVL5:
+ 165              		.loc 1 62 6 view .LVU19
+ 166 000a FFF7FEFF 		bl	HAL_UART_Receive
+ 167              	.LVL6:
+ 168              		.loc 1 62 5 view .LVU20
+ 169 000e 00B1     		cbz	r0, .L16
+  63:Src/Modbus_Master/trans_recieve_buff_control.c ****   {
+  64:Src/Modbus_Master/trans_recieve_buff_control.c **** 		return HAL_ERROR;
+ 170              		.loc 1 64 10 view .LVU21
+ARM GAS  C:\Users\andywei\AppData\Local\Temp\cc38CnnP.s 			page 5
+
+
+ 171 0010 0120     		movs	r0, #1
+ 172              	.L16:
+  65:Src/Modbus_Master/trans_recieve_buff_control.c **** 	}
+  66:Src/Modbus_Master/trans_recieve_buff_control.c **** 	else
+  67:Src/Modbus_Master/trans_recieve_buff_control.c **** 	{
+  68:Src/Modbus_Master/trans_recieve_buff_control.c **** 	  return HAL_OK;
+  69:Src/Modbus_Master/trans_recieve_buff_control.c **** 	}
+  70:Src/Modbus_Master/trans_recieve_buff_control.c **** }
+ 173              		.loc 1 70 1 view .LVU22
+ 174 0012 08BD     		pop	{r3, pc}
+ 175              	.L19:
+ 176              		.align	2
+ 177              	.L18:
+ 178 0014 00000000 		.word	huart2
+ 179              		.cfi_endproc
+ 180              	.LFE138:
+ 182              		.section	.text.Modbus_Master_Rece_Handler,"ax",%progbits
+ 183              		.align	1
+ 184              		.global	Modbus_Master_Rece_Handler
+ 185              		.syntax unified
+ 186              		.thumb
+ 187              		.thumb_func
+ 188              		.fpu fpv4-sp-d16
+ 190              	Modbus_Master_Rece_Handler:
+ 191              	.LFB139:
+  71:Src/Modbus_Master/trans_recieve_buff_control.c **** 
+  72:Src/Modbus_Master/trans_recieve_buff_control.c **** /**
+  73:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @brief  ÖÐ¶Ï´¦Àíº¯Êý£¬ÔÚ´®¿Ú½ÓÊÕÖÐ¶ÏÖÐµ÷ÓÃ£º½«¼Ä´æÆ÷µÄÊýÖµÑ¹ÈË»º³åÇø
+  74:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @param
+  75:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @note
+  76:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @retval void
+  77:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @author xiaodaqi
+  78:Src/Modbus_Master/trans_recieve_buff_control.c ****   */
+  79:Src/Modbus_Master/trans_recieve_buff_control.c **** uint8_t Modbus_Master_Rece_Handler(void)
+  80:Src/Modbus_Master/trans_recieve_buff_control.c **** {
+ 192              		.loc 1 80 1 is_stmt 1 view -0
+ 193              		.cfi_startproc
+ 194              		@ args = 0, pretend = 0, frame = 8
+ 195              		@ frame_needed = 0, uses_anonymous_args = 0
+ 196 0000 00B5     		push	{lr}
+ 197              	.LCFI4:
+ 198              		.cfi_def_cfa_offset 4
+ 199              		.cfi_offset 14, -4
+ 200 0002 83B0     		sub	sp, sp, #12
+ 201              	.LCFI5:
+ 202              		.cfi_def_cfa_offset 16
+  81:Src/Modbus_Master/trans_recieve_buff_control.c **** 	 uint8_t byte;
+ 203              		.loc 1 81 3 view .LVU24
+  82:Src/Modbus_Master/trans_recieve_buff_control.c **** 	//¶ÁÈ¡¼Ä´æÆ÷ÀïÃæµÄÊý¾Ý£¬²¢ÇÒ½«Êý¾ÝÑ¹Èë»·ÐÎ¶ÓÁÐ
+  83:Src/Modbus_Master/trans_recieve_buff_control.c ****    if(Modbus_Master_GetByte(&byte)==HAL_OK)
+ 204              		.loc 1 83 4 view .LVU25
+ 205              		.loc 1 83 7 is_stmt 0 view .LVU26
+ 206 0004 0DF10700 		add	r0, sp, #7
+ 207 0008 FFF7FEFF 		bl	Modbus_Master_GetByte
+ 208              	.LVL7:
+ 209              		.loc 1 83 6 view .LVU27
+ 210 000c 10B1     		cbz	r0, .L23
+ARM GAS  C:\Users\andywei\AppData\Local\Temp\cc38CnnP.s 			page 6
+
+
+ 211              	.L21:
+  84:Src/Modbus_Master/trans_recieve_buff_control.c **** 	 {
+  85:Src/Modbus_Master/trans_recieve_buff_control.c **** 	   rbPush(&m_Modbus_Master_RX_RingBuff, (uint8_t)(byte & (uint8_t)0xFFU));
+  86:Src/Modbus_Master/trans_recieve_buff_control.c **** 	 }
+  87:Src/Modbus_Master/trans_recieve_buff_control.c **** }
+ 212              		.loc 1 87 1 view .LVU28
+ 213 000e 03B0     		add	sp, sp, #12
+ 214              	.LCFI6:
+ 215              		.cfi_remember_state
+ 216              		.cfi_def_cfa_offset 4
+ 217              		@ sp needed
+ 218 0010 5DF804FB 		ldr	pc, [sp], #4
+ 219              	.L23:
+ 220              	.LCFI7:
+ 221              		.cfi_restore_state
+  85:Src/Modbus_Master/trans_recieve_buff_control.c **** 	 }
+ 222              		.loc 1 85 5 is_stmt 1 view .LVU29
+ 223 0014 9DF80710 		ldrb	r1, [sp, #7]	@ zero_extendqisi2
+ 224 0018 0148     		ldr	r0, .L24
+ 225 001a FFF7FEFF 		bl	rbPush
+ 226              	.LVL8:
+ 227 001e F6E7     		b	.L21
+ 228              	.L25:
+ 229              		.align	2
+ 230              	.L24:
+ 231 0020 00000000 		.word	m_Modbus_Master_RX_RingBuff
+ 232              		.cfi_endproc
+ 233              	.LFE139:
+ 235              		.section	.text.Modbus_Master_Read,"ax",%progbits
+ 236              		.align	1
+ 237              		.global	Modbus_Master_Read
+ 238              		.syntax unified
+ 239              		.thumb
+ 240              		.thumb_func
+ 241              		.fpu fpv4-sp-d16
+ 243              	Modbus_Master_Read:
+ 244              	.LFB140:
+  88:Src/Modbus_Master/trans_recieve_buff_control.c **** 
+  89:Src/Modbus_Master/trans_recieve_buff_control.c **** /**
+  90:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @brief  ¶Á³ö»º³åÇøµÄÊý¾Ý
+  91:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @param
+  92:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @note
+  93:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @retval void
+  94:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @author xiaodaqi
+  95:Src/Modbus_Master/trans_recieve_buff_control.c ****   */
+  96:Src/Modbus_Master/trans_recieve_buff_control.c **** uint8_t Modbus_Master_Read(void)
+  97:Src/Modbus_Master/trans_recieve_buff_control.c **** {
+ 245              		.loc 1 97 1 view -0
+ 246              		.cfi_startproc
+ 247              		@ args = 0, pretend = 0, frame = 0
+ 248              		@ frame_needed = 0, uses_anonymous_args = 0
+ 249 0000 08B5     		push	{r3, lr}
+ 250              	.LCFI8:
+ 251              		.cfi_def_cfa_offset 8
+ 252              		.cfi_offset 3, -8
+ 253              		.cfi_offset 14, -4
+  98:Src/Modbus_Master/trans_recieve_buff_control.c **** 	uint8_t cur =0xff;
+ARM GAS  C:\Users\andywei\AppData\Local\Temp\cc38CnnP.s 			page 7
+
+
+ 254              		.loc 1 98 2 view .LVU31
+ 255              	.LVL9:
+  99:Src/Modbus_Master/trans_recieve_buff_control.c **** 	if( !rbIsEmpty(&m_Modbus_Master_RX_RingBuff))
+ 256              		.loc 1 99 2 view .LVU32
+ 257              		.loc 1 99 7 is_stmt 0 view .LVU33
+ 258 0002 0548     		ldr	r0, .L31
+ 259 0004 FFF7FEFF 		bl	rbIsEmpty
+ 260              	.LVL10:
+ 261              		.loc 1 99 4 view .LVU34
+ 262 0008 08B1     		cbz	r0, .L30
+  98:Src/Modbus_Master/trans_recieve_buff_control.c **** 	uint8_t cur =0xff;
+ 263              		.loc 1 98 10 view .LVU35
+ 264 000a FF20     		movs	r0, #255
+ 265              	.LVL11:
+ 266              	.L27:
+ 100:Src/Modbus_Master/trans_recieve_buff_control.c **** 	{
+ 101:Src/Modbus_Master/trans_recieve_buff_control.c **** 		  cur = rbPop(&m_Modbus_Master_RX_RingBuff);
+ 102:Src/Modbus_Master/trans_recieve_buff_control.c **** 	}
+ 103:Src/Modbus_Master/trans_recieve_buff_control.c **** 	return cur;
+ 267              		.loc 1 103 2 is_stmt 1 view .LVU36
+ 104:Src/Modbus_Master/trans_recieve_buff_control.c **** }
+ 268              		.loc 1 104 1 is_stmt 0 view .LVU37
+ 269 000c 08BD     		pop	{r3, pc}
+ 270              	.LVL12:
+ 271              	.L30:
+ 101:Src/Modbus_Master/trans_recieve_buff_control.c **** 	}
+ 272              		.loc 1 101 5 is_stmt 1 view .LVU38
+ 101:Src/Modbus_Master/trans_recieve_buff_control.c **** 	}
+ 273              		.loc 1 101 11 is_stmt 0 view .LVU39
+ 274 000e 0248     		ldr	r0, .L31
+ 275 0010 FFF7FEFF 		bl	rbPop
+ 276              	.LVL13:
+ 101:Src/Modbus_Master/trans_recieve_buff_control.c **** 	}
+ 277              		.loc 1 101 11 view .LVU40
+ 278 0014 FAE7     		b	.L27
+ 279              	.L32:
+ 280 0016 00BF     		.align	2
+ 281              	.L31:
+ 282 0018 00000000 		.word	m_Modbus_Master_RX_RingBuff
+ 283              		.cfi_endproc
+ 284              	.LFE140:
+ 286              		.section	.text.Modbus_Master_Write,"ax",%progbits
+ 287              		.align	1
+ 288              		.global	Modbus_Master_Write
+ 289              		.syntax unified
+ 290              		.thumb
+ 291              		.thumb_func
+ 292              		.fpu fpv4-sp-d16
+ 294              	Modbus_Master_Write:
+ 295              	.LVL14:
+ 296              	.LFB141:
+ 105:Src/Modbus_Master/trans_recieve_buff_control.c **** 
+ 106:Src/Modbus_Master/trans_recieve_buff_control.c **** /**
+ 107:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @brief  ½«Êý¾Ý°ü·¢ËÍ³öÈ¥
+ 108:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @param
+ 109:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @note
+ 110:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @retval void
+ARM GAS  C:\Users\andywei\AppData\Local\Temp\cc38CnnP.s 			page 8
+
+
+ 111:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @author xiaodaqi
+ 112:Src/Modbus_Master/trans_recieve_buff_control.c ****   */
+ 113:Src/Modbus_Master/trans_recieve_buff_control.c **** uint8_t Modbus_Master_Write(uint8_t *buf,uint8_t length)
+ 114:Src/Modbus_Master/trans_recieve_buff_control.c **** {
+ 297              		.loc 1 114 1 is_stmt 1 view -0
+ 298              		.cfi_startproc
+ 299              		@ args = 0, pretend = 0, frame = 0
+ 300              		@ frame_needed = 0, uses_anonymous_args = 0
+ 301              		.loc 1 114 1 is_stmt 0 view .LVU42
+ 302 0000 08B5     		push	{r3, lr}
+ 303              	.LCFI9:
+ 304              		.cfi_def_cfa_offset 8
+ 305              		.cfi_offset 3, -8
+ 306              		.cfi_offset 14, -4
+ 307 0002 0A46     		mov	r2, r1
+ 115:Src/Modbus_Master/trans_recieve_buff_control.c ****  if(HAL_UART_Transmit(&huart2 ,(uint8_t *)buf,length,0xff))
+ 308              		.loc 1 115 2 is_stmt 1 view .LVU43
+ 309              		.loc 1 115 5 is_stmt 0 view .LVU44
+ 310 0004 FF23     		movs	r3, #255
+ 311 0006 0146     		mov	r1, r0
+ 312              	.LVL15:
+ 313              		.loc 1 115 5 view .LVU45
+ 314 0008 0248     		ldr	r0, .L36
+ 315              	.LVL16:
+ 316              		.loc 1 115 5 view .LVU46
+ 317 000a FFF7FEFF 		bl	HAL_UART_Transmit
+ 318              	.LVL17:
+ 319              		.loc 1 115 4 view .LVU47
+ 320 000e 00B1     		cbz	r0, .L34
+ 116:Src/Modbus_Master/trans_recieve_buff_control.c ****  {
+ 117:Src/Modbus_Master/trans_recieve_buff_control.c ****    return HAL_ERROR;
+ 321              		.loc 1 117 11 view .LVU48
+ 322 0010 0120     		movs	r0, #1
+ 323              	.L34:
+ 118:Src/Modbus_Master/trans_recieve_buff_control.c ****  }
+ 119:Src/Modbus_Master/trans_recieve_buff_control.c ****  	else
+ 120:Src/Modbus_Master/trans_recieve_buff_control.c **** 	{
+ 121:Src/Modbus_Master/trans_recieve_buff_control.c **** 	  return HAL_OK;
+ 122:Src/Modbus_Master/trans_recieve_buff_control.c **** 	}
+ 123:Src/Modbus_Master/trans_recieve_buff_control.c **** }
+ 324              		.loc 1 123 1 view .LVU49
+ 325 0012 08BD     		pop	{r3, pc}
+ 326              	.L37:
+ 327              		.align	2
+ 328              	.L36:
+ 329 0014 00000000 		.word	huart2
+ 330              		.cfi_endproc
+ 331              	.LFE141:
+ 333              		.section	.text.Modbus_Master_Millis,"ax",%progbits
+ 334              		.align	1
+ 335              		.global	Modbus_Master_Millis
+ 336              		.syntax unified
+ 337              		.thumb
+ 338              		.thumb_func
+ 339              		.fpu fpv4-sp-d16
+ 341              	Modbus_Master_Millis:
+ 342              	.LFB142:
+ARM GAS  C:\Users\andywei\AppData\Local\Temp\cc38CnnP.s 			page 9
+
+
+ 124:Src/Modbus_Master/trans_recieve_buff_control.c **** 
+ 125:Src/Modbus_Master/trans_recieve_buff_control.c **** /**
+ 126:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @brief  1msÖÜÆÚµÄ¶¨Ê±Æ÷
+ 127:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @param
+ 128:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @note
+ 129:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @retval void
+ 130:Src/Modbus_Master/trans_recieve_buff_control.c ****   * @author xiaodaqi
+ 131:Src/Modbus_Master/trans_recieve_buff_control.c ****   */
+ 132:Src/Modbus_Master/trans_recieve_buff_control.c **** uint32_t Modbus_Master_Millis(void)
+ 133:Src/Modbus_Master/trans_recieve_buff_control.c **** {
+ 343              		.loc 1 133 1 is_stmt 1 view -0
+ 344              		.cfi_startproc
+ 345              		@ args = 0, pretend = 0, frame = 0
+ 346              		@ frame_needed = 0, uses_anonymous_args = 0
+ 347 0000 08B5     		push	{r3, lr}
+ 348              	.LCFI10:
+ 349              		.cfi_def_cfa_offset 8
+ 350              		.cfi_offset 3, -8
+ 351              		.cfi_offset 14, -4
+ 134:Src/Modbus_Master/trans_recieve_buff_control.c ****   return HAL_GetTick();
+ 352              		.loc 1 134 3 view .LVU51
+ 353              		.loc 1 134 10 is_stmt 0 view .LVU52
+ 354 0002 FFF7FEFF 		bl	HAL_GetTick
+ 355              	.LVL18:
+ 135:Src/Modbus_Master/trans_recieve_buff_control.c **** }
+ 356              		.loc 1 135 1 view .LVU53
+ 357 0006 08BD     		pop	{r3, pc}
+ 358              		.cfi_endproc
+ 359              	.LFE142:
+ 361              		.comm	m_Modbus_Master_RX_Buff,200,4
+ 362              		.comm	m_Modbus_Master_RX_RingBuff,20,4
+ 363              		.text
+ 364              	.Letext0:
+ 365              		.file 2 "c:\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\include\\machine\\_defau
+ 366              		.file 3 "c:\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 367              		.file 4 "Drivers/CMSIS/Include/core_cm4.h"
+ 368              		.file 5 "Drivers/CMSIS/Device/ST/STM32L4xx/Include/system_stm32l4xx.h"
+ 369              		.file 6 "Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l476xx.h"
+ 370              		.file 7 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_def.h"
+ 371              		.file 8 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_dma.h"
+ 372              		.file 9 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_flash.h"
+ 373              		.file 10 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h"
+ 374              		.file 11 "Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h"
+ 375              		.file 12 "c:\\gnu arm embedded toolchain\\9 2020-q2-update\\lib\\gcc\\arm-none-eabi\\9.3.1\\includ
+ 376              		.file 13 "c:\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\include\\sys\\_types.h"
+ 377              		.file 14 "c:\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\include\\sys\\reent.h"
+ 378              		.file 15 "c:\\gnu arm embedded toolchain\\9 2020-q2-update\\arm-none-eabi\\include\\sys\\lock.h"
+ 379              		.file 16 "Src/Modbus_Master/ringbuffer.h"
+ARM GAS  C:\Users\andywei\AppData\Local\Temp\cc38CnnP.s 			page 10
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 trans_recieve_buff_control.c
+C:\Users\andywei\AppData\Local\Temp\cc38CnnP.s:18     .text.Modbus_Master_RB_Initialize:00000000 $t
+C:\Users\andywei\AppData\Local\Temp\cc38CnnP.s:26     .text.Modbus_Master_RB_Initialize:00000000 Modbus_Master_RB_Initialize
+C:\Users\andywei\AppData\Local\Temp\cc38CnnP.s:51     .text.Modbus_Master_RB_Initialize:00000010 $d
+                            *COM*:000000c8 m_Modbus_Master_RX_Buff
+                            *COM*:00000014 m_Modbus_Master_RX_RingBuff
+C:\Users\andywei\AppData\Local\Temp\cc38CnnP.s:57     .text.Modbus_Master_Rece_Flush:00000000 $t
+C:\Users\andywei\AppData\Local\Temp\cc38CnnP.s:64     .text.Modbus_Master_Rece_Flush:00000000 Modbus_Master_Rece_Flush
+C:\Users\andywei\AppData\Local\Temp\cc38CnnP.s:84     .text.Modbus_Master_Rece_Flush:0000000c $d
+C:\Users\andywei\AppData\Local\Temp\cc38CnnP.s:89     .text.Modbus_Master_Rece_Available:00000000 $t
+C:\Users\andywei\AppData\Local\Temp\cc38CnnP.s:96     .text.Modbus_Master_Rece_Available:00000000 Modbus_Master_Rece_Available
+C:\Users\andywei\AppData\Local\Temp\cc38CnnP.s:133    .text.Modbus_Master_Rece_Available:00000020 $d
+C:\Users\andywei\AppData\Local\Temp\cc38CnnP.s:138    .text.Modbus_Master_GetByte:00000000 $t
+C:\Users\andywei\AppData\Local\Temp\cc38CnnP.s:145    .text.Modbus_Master_GetByte:00000000 Modbus_Master_GetByte
+C:\Users\andywei\AppData\Local\Temp\cc38CnnP.s:178    .text.Modbus_Master_GetByte:00000014 $d
+C:\Users\andywei\AppData\Local\Temp\cc38CnnP.s:183    .text.Modbus_Master_Rece_Handler:00000000 $t
+C:\Users\andywei\AppData\Local\Temp\cc38CnnP.s:190    .text.Modbus_Master_Rece_Handler:00000000 Modbus_Master_Rece_Handler
+C:\Users\andywei\AppData\Local\Temp\cc38CnnP.s:231    .text.Modbus_Master_Rece_Handler:00000020 $d
+C:\Users\andywei\AppData\Local\Temp\cc38CnnP.s:236    .text.Modbus_Master_Read:00000000 $t
+C:\Users\andywei\AppData\Local\Temp\cc38CnnP.s:243    .text.Modbus_Master_Read:00000000 Modbus_Master_Read
+C:\Users\andywei\AppData\Local\Temp\cc38CnnP.s:282    .text.Modbus_Master_Read:00000018 $d
+C:\Users\andywei\AppData\Local\Temp\cc38CnnP.s:287    .text.Modbus_Master_Write:00000000 $t
+C:\Users\andywei\AppData\Local\Temp\cc38CnnP.s:294    .text.Modbus_Master_Write:00000000 Modbus_Master_Write
+C:\Users\andywei\AppData\Local\Temp\cc38CnnP.s:329    .text.Modbus_Master_Write:00000014 $d
+C:\Users\andywei\AppData\Local\Temp\cc38CnnP.s:334    .text.Modbus_Master_Millis:00000000 $t
+C:\Users\andywei\AppData\Local\Temp\cc38CnnP.s:341    .text.Modbus_Master_Millis:00000000 Modbus_Master_Millis
+
+UNDEFINED SYMBOLS
+rbInitialize
+rbClear
+rbIsEmpty
+HAL_UART_Receive
+huart2
+rbPush
+rbPop
+HAL_UART_Transmit
+HAL_GetTick
