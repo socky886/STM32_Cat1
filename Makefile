@@ -42,6 +42,9 @@ Src/Dut_Com.c \
 Src/Modbus_Master/modbus_master.c \
 Src/Modbus_Master/ringbuffer.c \
 Src/Modbus_Master/trans_recieve_buff_control.c \
+Src/SYS/sys_command_line.c \
+Src/SYS/sys_queue.c \
+Src/APP/app_led.c  \
 Src/stm32l4xx_it.c \
 Src/stm32l4xx_hal_msp.c \
 Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_spi.c \
@@ -123,6 +126,8 @@ AS_INCLUDES =
 # C includes
 C_INCLUDES =  \
 -IInc \
+-ISrc/APP \
+-ISrc/SYS \
 -ISrc/Modbus_Master \
 -IDrivers/STM32L4xx_HAL_Driver/Inc \
 -IDrivers/STM32L4xx_HAL_Driver/Inc/Legacy \
