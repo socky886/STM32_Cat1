@@ -350,19 +350,19 @@ static void cli_rx_handle(RX_BUFF_TYPE *rx_buff)
             /* new char coming from the terminal, copy it to Handle.buff */
             if(TRUE == QUEUE_OUT((*rx_buff), Handle.buff[Handle.len])) {
                 /* KEY_BACKSPACE -->get DELETE key from keyboard */
-                if (KEY_BACKSPACE == Handle.buff[Handle.len]) {
-                    /* buffer not empty */
-                    if (0 < Handle.len) {
-                        /* delete a char in terminal */
-                        TERMINAL_MOVE_LEFT(1);
-                        TERMINAL_CLEAR_END();
-                        Handle.len -= 1;
-                    }
+                // if (KEY_BACKSPACE == Handle.buff[Handle.len]) {
+                //     /* buffer not empty */
+                //     if (0 < Handle.len) {
+                //         /* delete a char in terminal */
+                //         TERMINAL_MOVE_LEFT(1);
+                //         TERMINAL_CLEAR_END();
+                //         Handle.len -= 1;
+                //     }
 
-                } else {
+                // } else {
                     //PRINTF("%02x ", Handle.buff[Handle.len]); /* debug */
                     Handle.len++;
-                }
+                // }
 
             } else {
                 /* all chars copied to Handle.buff */
@@ -439,7 +439,7 @@ static void cli_rx_handle(RX_BUFF_TYPE *rx_buff)
         /* a command must ending with KEY_ENTER */
         if(KEY_ENTER == Handle.buff[Handle.len - 1]) {
             Handle.buff[Handle.len - 1] = '\0';
-            printf("call junfeng function1--\n");
+            printf("the last chareacter is enter--\n");
             /* looking for a match */
             for(i = 0; i < sizeof(CLI_Cmd) / sizeof(COMMAND_S); i++) {
                 if(0 == strncmp((const char *)Handle.buff,

@@ -11,7 +11,7 @@ ByteLimit=50
 [StLinkDriver]
 CStepIntDis=_ 0
 LeaveTargetRunning=_ 0
-stlinkserialNo=67105526
+stlinkserialNo=67015636
 stlinkfoundProbes=
 [DebugChecksum]
 Checksum=-1967105602

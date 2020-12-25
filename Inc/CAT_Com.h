@@ -110,6 +110,26 @@
 #define FIRMWARE_PACKAGE_NUMBER 4002 //烧录固件编号
 #define bin_start_address 4003       //固件包的首地址，每包512bytes
 
+
+//cat1 network register command
+#define  AT_TEST  "AT\n"  //PWR_key
+#define  QUERY_SIM_CARD_STATUS "AT+CPIN?\n"  //查询SIM卡状态
+#define  QUERY_RSSI "AT+CSQ\n"    //查询信号强度
+#define  QUERY_DATA_TRANSACTION_ATTACH "AT+CGREG?\n" //查询数据业务附着
+#define  QUERY_IMSI_NUMBER "AT+CIMI\n" //查询sim卡IMSI号
+#define  Query_IMEI_NUMBER "AT+CGSN\n" //查询模块IMEI号
+#define  QUERY_NETWORK_REGISTER_STATUS "AT+QNWINFO\n" //当前网络注册状态
+
+//MQTT related command
+#define CONFIG_RECEIVE_DATA_MODE "AT+QMTCFG=\"recv/mode\",0,0,1\n"  //配置接收数据的模式
+#define OPEN_MQTT_SERVER "AT+QMTOPEN=0,\"47.102.222.71\",1883\n"  //MQTT客户端打开网络
+#define CREATE_MQTT_CONNECTION "AT+QMTCONN=0,\"12345\",\"sxtest\",\"test1215\"\n" //连接MQTT服务器
+#define MQTT_SUBSCRIBE_TOPIC  "AT+QMTSUB=0,1,\"Topic/flexem/Box/12345/system/WriteData\",1\n" //订阅主题
+#define MQTT_SEND_MESSAGE "AT+QMTPUBEX=0,0,0,0,\"Topic/flexem/Box/12345/system/WriteData\",30\n"  //发送数据
+#define MQTT_RECEIVE_MESSAGE "+QMTRECV: 0,0,\"Topic/flexem/Box/12345/system/WriteData\",5,\"hello\"\n" //接收到topic数据的串口打印
+
+
+
 void Tx_Byte_To_Cat(unsigned char x);
 void Tx_String_To_Cat(char *p);
 
