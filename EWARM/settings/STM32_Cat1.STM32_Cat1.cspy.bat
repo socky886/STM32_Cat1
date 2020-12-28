@@ -25,7 +25,7 @@ if not "%~1" == "" goto debugFile
 
 @echo on 
 
-"C:\IAR Systems\Embedded Workbench 7.5\common\bin\cspybat" -f "D:\huimeng\newtimeda\dut\STM32_Cat1\EWARM\settings\STM32_Cat1.STM32_Cat1.general.xcl" --backend -f "D:\huimeng\newtimeda\dut\STM32_Cat1\EWARM\settings\STM32_Cat1.STM32_Cat1.driver.xcl" 
+"C:\IAR Systems\Embedded Workbench 7.5\common\bin\cspybat" -f "D:\huimeng\newtimeda\dut\stm32_cat1\EWARM\settings\STM32_Cat1.STM32_Cat1.general.xcl" --backend -f "D:\huimeng\newtimeda\dut\stm32_cat1\EWARM\settings\STM32_Cat1.STM32_Cat1.driver.xcl" 
 
 @echo off 
 goto end 
@@ -34,7 +34,7 @@ goto end
 
 @echo on 
 
-"C:\IAR Systems\Embedded Workbench 7.5\common\bin\cspybat" -f "D:\huimeng\newtimeda\dut\STM32_Cat1\EWARM\settings\STM32_Cat1.STM32_Cat1.general.xcl" "--debug_file=%~1" --backend -f "D:\huimeng\newtimeda\dut\STM32_Cat1\EWARM\settings\STM32_Cat1.STM32_Cat1.driver.xcl" 
+"C:\IAR Systems\Embedded Workbench 7.5\common\bin\cspybat" -f "D:\huimeng\newtimeda\dut\stm32_cat1\EWARM\settings\STM32_Cat1.STM32_Cat1.general.xcl" "--debug_file=%~1" --backend -f "D:\huimeng\newtimeda\dut\stm32_cat1\EWARM\settings\STM32_Cat1.STM32_Cat1.driver.xcl" 
 
 @echo off 
 :end

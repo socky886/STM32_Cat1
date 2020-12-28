@@ -4,7 +4,9 @@
 RingBuffer  m_Modbus_Master_RX_RingBuff;
 uint8_t     m_Modbus_Master_RX_Buff[200];
 
-extern UART_HandleTypeDef huart2;
+#define DUT_SERIAL  huart1
+extern UART_HandleTypeDef huart1;
+extern uint8_t rx_buffer1[2];
 /**
   * @brief  初始化中断接收的的ringbuffer环形队列配置,中断接收的字节都用m_Modbus_Master_RX_RingBuff该结构体指针进行管理
   * @param
@@ -59,7 +61,7 @@ uint8_t Modbus_Master_Rece_Available(void)
   */
 uint8_t Modbus_Master_GetByte(uint8_t  *getbyte)
 {
-  if(HAL_UART_Receive (&huart2 ,(uint8_t *)getbyte,1,0x01) != HAL_OK )
+  if(HAL_UART_Receive (&DUT_SERIAL ,(uint8_t *)getbyte,1,0x01) != HAL_OK )
   {
 		return HAL_ERROR;
 	}
@@ -78,12 +80,15 @@ uint8_t Modbus_Master_GetByte(uint8_t  *getbyte)
   */
 uint8_t Modbus_Master_Rece_Handler(void)
 {
-	 uint8_t byte;
+	//  uint8_t byte;
 	//读取寄存器里面的数据，并且将数据压入环形队列
-   if(Modbus_Master_GetByte(&byte)==HAL_OK)
-	 {
-	   rbPush(&m_Modbus_Master_RX_RingBuff, (uint8_t)(byte & (uint8_t)0xFFU));
-	 }
+  //  if(Modbus_Master_GetByte(&byte)==HAL_OK)
+	//  {
+	//    rbPush(&m_Modbus_Master_RX_RingBuff, (uint8_t)(byte & (uint8_t)0xFFU));
+	//  }
+
+   rbPush(&m_Modbus_Master_RX_RingBuff, rx_buffer1[0] );//
+   return 1;
 }
 
 /**
@@ -112,7 +117,7 @@ uint8_t Modbus_Master_Read(void)
   */
 uint8_t Modbus_Master_Write(uint8_t *buf,uint8_t length)
 {
- if(HAL_UART_Transmit(&huart2 ,(uint8_t *)buf,length,0xff))
+ if(HAL_UART_Transmit(&DUT_SERIAL ,(uint8_t *)buf,length,0xff))
  {
    return HAL_ERROR;
  }

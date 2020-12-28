@@ -2,7 +2,7 @@
 
 "C:\IAR Systems\Embedded Workbench 7.5\arm\bin\armstlink2.dll" 
 
-"D:\huimeng\newtimeda\dut\STM32_Cat1\EWARM\STM32_Cat1\Exe\STM32_Cat1.out" 
+"D:\huimeng\newtimeda\dut\stm32_cat1\EWARM\STM32_Cat1\Exe\STM32_Cat1.out" 
 
 --plugin "C:\IAR Systems\Embedded Workbench 7.5\arm\bin\armbat.dll" 
 

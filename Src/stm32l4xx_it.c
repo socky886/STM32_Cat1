@@ -261,11 +261,11 @@ void USART1_IRQHandler(void)
 void USART2_IRQHandler(void)
 {
   /* USER CODE BEGIN USART2_IRQn 0 */
-  if(__HAL_UART_GET_IT_SOURCE(&huart2, UART_IT_RXNE)!= RESET) 
-	{
-		Modbus_Master_Rece_Handler();
-	}
-	HAL_NVIC_ClearPendingIRQ(USART2_IRQn);
+  // if(__HAL_UART_GET_IT_SOURCE(&huart2, UART_IT_RXNE)!= RESET) 
+	// {
+	// 	Modbus_Master_Rece_Handler();
+	// }
+	// HAL_NVIC_ClearPendingIRQ(USART2_IRQn);
   /* USER CODE END USART2_IRQn 0 */
   HAL_UART_IRQHandler(&huart2);
   /* USER CODE BEGIN USART2_IRQn 1 */

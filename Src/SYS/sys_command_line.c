@@ -25,6 +25,7 @@ static uint8_t cli_clear(void *para, uint8_t len);
 static uint8_t cli_echo(void *para, uint8_t len);
 static uint8_t cli_reboot(void *para, uint8_t len);
 
+extern unsigned char cli_rx;
 
 __packed typedef struct {
 #define HANDLE_LEN 128
@@ -85,11 +86,11 @@ uint8_t junfeng_pInit(void)
     printf("this is junfeng init function of cli\n");
     return 0x01;
 }
-uint8_t junfeng_pFun(void *p, uint8_t len)
-{
-    printf("this is junfeng execute function of cli\n");
-    return 0x00;
-}
+// uint8_t junfeng_pFun(void *p, uint8_t len)
+// {
+//     printf("this is junfeng execute function of cli\n");
+//     return 0x00;
+// }
 /**
   * @brief  printf the help info.
   * @param  para addr. & length
@@ -311,18 +312,18 @@ void cli_init(uint32_t baud)
     }
 
     PRINTF(" \r\n");
-    TERMINAL_BACK_BLACK(); /* set terminal background color: black */
-    TERMINAL_FONT_GREEN(); /* set terminal display color: green */
-    TERMINAL_DISPLAY_CLEAR();
-    TERMINAL_RESET_CURSOR();
+    // TERMINAL_BACK_BLACK(); /* set terminal background color: black */
+    // TERMINAL_FONT_GREEN(); /* set terminal display color: green */
+    // TERMINAL_DISPLAY_CLEAR();
+    // TERMINAL_RESET_CURSOR();
 
-    PRINTF_COLOR(E_FONT_YELLOW, "-------------------------------\r\n\r\n");
-    TERMINAL_HIGH_LIGHT();
+    // PRINTF_COLOR(E_FONT_YELLOW, "-------------------------------\r\n\r\n");
+    // TERMINAL_HIGH_LIGHT();
     PRINTF("    CLI version: V0.1          \r\n\r\n");
     PRINTF("    coder: Cat                 \r\n\r\n");
     PRINTF("    Email: junfeng.wei@honestar.com    \r\n\r\n");
-    TERMINAL_UN_HIGH_LIGHT();
-    PRINTF_COLOR(E_FONT_YELLOW, "-------------------------------\r\n\r\n");
+    // TERMINAL_UN_HIGH_LIGHT();
+    // PRINTF_COLOR(E_FONT_YELLOW, "-------------------------------\r\n\r\n");
 }
 
 
@@ -332,6 +333,135 @@ void cli_init(uint32_t baud)
   * @retval null
   */
 static void cli_rx_handle(RX_BUFF_TYPE *rx_buff)
+{
+    static HANDLE_TYPE_S Handle = {.len = 0};
+    uint8_t i = Handle.len;
+    uint8_t ParaLen;
+    uint8_t *ParaAddr;
+    uint8_t cmd_match = FALSE;
+
+    /*  ---------------------------------------
+        Step1: save chars from the terminal
+        ---------------------------------------
+     */
+    // if(cli_rx==0)
+    //     return;
+
+    while (1)
+    {
+
+        if (Handle.len < HANDLE_LEN)
+        { /* check the buffer */
+
+            /* new char coming from the terminal, copy it to Handle.buff */
+            if (TRUE == QUEUE_OUT((*rx_buff), Handle.buff[Handle.len]))
+            {
+                Handle.len++;
+            }
+            else
+            {
+                /* all chars copied to Handle.buff */
+
+                /* display char in terminal */
+                for (; i < Handle.len; i++)
+                {
+                    //USART_SendData(DEBUG_USARTx, Handle.buff[i]);
+                    //Tx_Byte(Handle.buff[i]);
+                    Tx_Byte_To_Cat(Handle.buff[i]);
+                }
+
+                break;
+            }
+        }
+        else
+        {
+            /* buffer full */
+            break;
+        }
+    }
+
+    /*  ---------------------------------------
+        Step2: handle the commands
+        ---------------------------------------
+     */
+    if ((1 == Handle.len) && (KEY_ENTER == Handle.buff[Handle.len - 1]))
+    {
+        /* KEY_ENTER -->ENTER key from terminal */
+        Handle.len = 0;
+    }
+    else if (1 < Handle.len)
+    { /* check for the length of command */
+        /* a command must ending with KEY_ENTER */
+        if (KEY_ENTER == Handle.buff[Handle.len - 1])
+        {
+            Handle.buff[Handle.len - 1] = '\0';
+            printf("the last chareacter is enter--\n");
+            /* looking for a match */
+            for (i = 0; i < sizeof(CLI_Cmd) / sizeof(COMMAND_S); i++)
+            {
+                if (0 == strncmp((const char *)Handle.buff,
+                                 (void *)CLI_Cmd[i].pCmd,
+                                 strlen(CLI_Cmd[i].pCmd)))
+                {
+                    cmd_match = TRUE;
+                    ParaLen = Handle.len - strlen(CLI_Cmd[i].pCmd);   /* para. length */
+                    ParaAddr = &Handle.buff[strlen(CLI_Cmd[i].pCmd)]; /* para. address */
+
+                    if (NULL != CLI_Cmd[i].pFun)
+                    {
+                        printf("call junfeng function\n");
+                        /* call the func. */
+                        if (CLI_Cmd[i].pFun(ParaAddr, ParaLen))
+                        {
+                            PRINTF("\r\n-> OK\r\n");
+
+                            /* ECHO */
+                            if (ENABLE == cli_echo_flag)
+                            {
+                                Handle.buff[Handle.len] = '\0';
+                                //PRINTF("[echo]: %s\r\n", (const char*)Handle.buff);
+                                printf("001\n");
+                            }
+                        }
+                        else
+                        {
+                            PRINTF("\r\n-> PARA. ERR\r\n");
+                            /* parameter wrong */
+                            PRINTF(CLI_Cmd[i].pHelp);
+                        }
+                    }
+                    else
+                    {
+                        /* func. is void */
+                        PRINTF("\r\n-> FUNC. ERR\r\n");
+                    }
+                }
+            }
+
+            if (FALSE == cmd_match)
+            {
+                /* no matching command */
+                PRINTF("\r\n-> CMD ERR, try: help\r\n\r\n");
+            }
+
+            Handle.len = 0;
+        }
+    }
+
+    if(Handle.len >= HANDLE_LEN) {
+        /* full, so restart the count */
+        Handle.len = 0;
+    }
+
+    cli_rx=0;
+}
+
+/**
+  * @brief  handle commands from the terminal
+  * @param  commands
+  * @retval null
+  */
+static void cli_rx_handle_raw(RX_BUFF_TYPE *rx_buff)
 {
     static HANDLE_TYPE_S Handle = {.len = 0};
     uint8_t i = Handle.len;
@@ -494,7 +624,6 @@ static void cli_rx_handle(RX_BUFF_TYPE *rx_buff)
         Handle.len = 0;
     }
 }
-
 
 /**
   * @brief  tx handle

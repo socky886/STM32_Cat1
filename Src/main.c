@@ -50,7 +50,9 @@ UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-uint8_t rx_buffer[20];
+uint8_t rx_buffer[2];
+uint8_t rx_buffer1[2];
+unsigned char cli_rx=0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -78,10 +80,38 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
   // Tx_Byte(rx_buffer[0]);
   
   /* save char */
-  QUEUE_IN(cli_rx_buff, rx_buffer[0]);
-  HAL_UART_Receive_IT(&huart2,rx_buffer,1);
-  
-  
+  if (huart == &huart2)
+  {
+    // Tx_Byte_To_Cat(rx_buffer[0]);
+    // printf("reeive one char\n");
+
+    // if(rx_buffer[0]!='\r' && rx_buffer[0]!='\n')
+    // {
+    QUEUE_IN(cli_rx_buff, rx_buffer[0]);
+    // }
+    // else
+    // {
+    //   cli_rx=1;
+    //   printf("rx full command\n");
+    // }
+    
+    HAL_UART_Receive_IT(&huart2, rx_buffer, 1);
+
+    
+    //  uint8_t ucData;
+    // if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET) {
+    //     ucData = USART_ReceiveData(USART1);
+    //     /* save char */
+    //     QUEUE_IN(cli_rx_buff, ucData);
+    //     //printf("%02x", ucTemp);
+    // }
+  }
+
+  if (huart == &huart1)
+  {
+    Modbus_Master_Rece_Handler();
+    HAL_UART_Receive_IT(&huart1, rx_buffer1, 1);
+  }
 }
 /* USER CODE END 0 */
 
@@ -116,11 +146,11 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_SPI1_Init();
-  
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   HAL_UART_Receive_IT(&huart2, rx_buffer, 1);
+  HAL_UART_Receive_IT(&huart1, rx_buffer1, 1);
   CLI_INIT(CLI_BAUDRATE);
   /* USER CODE END 2 */
 
@@ -131,8 +161,7 @@ int main(void)
     //Tx_String_To_Cat("my name is weijunfeng\n");
     //Dut_Tx_String("send string to dut\n");
     
-    //测试Read Input Registers功能
-    //从机地址0x01 ,寄存器地址 0x02 ,连续读2个寄存器地址
+   
     // result = ModbusMaster_readInputRegisters(0x01, 0x2, 2);
     // if (result == 0x00)
     // {

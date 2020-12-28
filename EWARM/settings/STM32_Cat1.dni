@@ -14,7 +14,7 @@ LeaveTargetRunning=_ 0
 stlinkserialNo=67015636
 stlinkfoundProbes=
 [DebugChecksum]
-Checksum=-1967105602
+Checksum=979751698
 [Exceptions]
 StopOnUncaught=_ 0
 StopOnThrow=_ 0
@@ -24,16 +24,6 @@ Enabled=_ 0
 ShowArgs=0
 [Disassembly]
 MixedMode=1
-[DriverProfiling]
-Enabled=0
-Mode=3
-Graph=0
-Symbiont=0
-Exclusions=
-[CallStackLog]
-Enabled=0
-[CallStackStripe]
-ShowTiming=192
 [SWOTraceHWSettings]
 OverrideDefaultClocks=0
 CpuClock=80000000
@@ -51,6 +41,16 @@ ITMportsEnable=0
 ITMportsTermIO=0
 ITMportsLogFile=0
 ITMlogFile=$PROJ_DIR$\ITM.log
+[DriverProfiling]
+Enabled=0
+Mode=3
+Graph=0
+Symbiont=0
+Exclusions=
+[CallStackLog]
+Enabled=0
+[CallStackStripe]
+ShowTiming=1
 [Trace2]
 Enabled=0
 ShowSource=0
