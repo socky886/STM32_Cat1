@@ -6,6 +6,7 @@
 #include "Dut_Com.h"
 #include "main.h"
 #include "modbus_master.h"
+#include "CAT_Com.h"
 // USART1 is for DUT
 extern UART_HandleTypeDef huart1;
 struct
@@ -25,6 +26,36 @@ struct
     uint16_t ng_index[2];
     uint16_t ng_ReadCoil[2];
 } s_ReadCoil;
+
+uint16_t ng_HoldReg[] = {
+    100,  //排气高温度保护进入值
+    50,   //排气高温保护回复值
+    100,  //电磁阀开启排气温度值
+    50,   //电磁阀关闭排气温度值
+    60,   //风机开启温度
+    70,   //风机关闭温度
+    200,  //启动延时
+    100,  //风机全关闭温度
+    3,    //波特率
+    0x01, //Modbus地址
+    0,    //校验位
+    0,    //停止位
+    80,   //排气温度设定值
+    100,  //阀的初始开度
+    5,    //排气温度偏差
+    6,    //排气温度偏差
+    7,    //目标过热度设定
+    5,    //目标过热度设定偏差
+    100,  //电磁阀开启排气温度值(补气)
+    100   //电磁阀关闭排气温度值(补气)
+};
+// ng_HoldReg[SYSTEM_RUN_MODE] = 0x01;  //系统运行模式
+// ng_HoldReg[RESERVE1_ADDRESS] = 0x01; //预留
+// ng_HoldReg[RESERVE2_ADDRESS] = 0x01; //预留
+
+
+
+extern uint8_t Modbus_Master_Write(uint8_t *buf,uint8_t length);
 
 /**
  * @brief DUT Tx one byte to control board
@@ -216,7 +247,13 @@ uint8_t Dut_Get_ReadCoil(void)
 
     return 0x01;
 }
-
+/**
+ * @brief 
+ * 
+ * @param address 
+ * @param onoff 
+ * @return uint8_t 
+ */
 uint8_t Dut_Set_SingleCoil(uint16_t address,uint8_t onoff)
 {
     int result;
@@ -241,4 +278,120 @@ uint8_t Dut_Set_SingleCoil(uint16_t address,uint8_t onoff)
     }
     return 0x01;
     
+}
+/**
+ * @brief read holding register
+ * 
+ * @return unit8_t 
+ */
+uint8_t  Dut_Get_Multi_HoldReg(void)
+{
+    int result;
+    int i;
+
+    result = ModbusMaster_readHoldingRegisters(0x01, 0x00, 19);
+    if (result == 0x00)
+    {
+        for (i = 0; i < 19; i++)
+        {
+            ng_HoldReg[i] = ModbusMaster_getResponseBuffer(i);
+            printf("%d value is %d\n", i, ng_HoldReg[i]);
+        }
+    }
+
+    //return value
+    return result;
+}
+/**
+ * @brief write multiple register
+ * 
+ * @return uint8_t 
+ */
+uint8_t Dut_Set_Multi_HoldReg(void)
+{
+    int result;
+    int i;
+    //clear transmit buffer
+    ModbusMaster_clearTransmitBuffer();
+
+    // fill the transmit buffer
+    for ( i = 0; i < 19; i++)
+    {
+        ModbusMaster_setTransmitBuffer(i,ng_HoldReg[i]);
+    }
+    
+    // write multiple register
+    result=ModbusMaster_writeMultipleRegisters(0x01,0x00,19);
+    if(result==0x00)
+    {
+        printf("write multiple registers successfully\n");
+    }
+    else
+    {
+        printf("write multiple registers failed\n");
+    }
+    
+    //return result
+    return result;
+}
+
+uint8_t Dut_OTA_Firmware(void)
+{
+    int result;
+    uint16_t rs;
+    uint8_t rs_upgrade=0x00;
+    uint8_t data[512];
+    uint8_t header[4];
+    //read single coil which address is 0x02
+    // get the current status of system
+    // 0: bootloader; 1: app
+    result = ModbusMaster_readCoils(0x01, 0x02, 1);
+    if (result == 0x00)
+    {
+        // get the current status of system
+        rs = ModbusMaster_getResponseBuffer(0);
+        rs &= 0x01;
+
+        // the current status of system is app
+        if (rs == 0x01)
+        {
+            // write single coil to switch to bootload
+            ModbusMaster_writeSingleCoil(0x01, 0x02, 1);
+            result = ModbusMaster_readCoils(0x01, 0x00, 3);
+            if (result == 0x00)
+            {
+                rs = ModbusMaster_getResponseBuffer(0);
+                if ((rs & 0x01 == 0x01) && (rs & 0x04 == 0x00))
+                {
+                    rs_upgrade = 1;
+                }
+            }
+        }
+    }
+
+    // permit to upgrade
+    // step 1:write app size
+    ModbusMaster_writeSingleRegister(0x01,4000,1024);
+    // step 2: send appcrc
+    ModbusMaster_writeSingleRegister(0x01,4001,0xa1b1);
+    // stpe 3 : send firmware number
+    ModbusMaster_writeSingleRegister(0x01,4002,0x1001);
+
+
+    // stpe 4: send bin
+    // send firt package
+    memset(data,0x01,512);
+    header[0]=0x01;// salve id
+    header[1]=highByte(4003);//address
+    header[2]=lowByte(4003);
+    header[3]=0x10; //function code
+    Modbus_Master_Write(header,4);
+    Modbus_Master_Write(data,512);
+
+    // send second package
+    memset(data,0x02,512);
+    header[1]=highByte(4004);//address
+    header[2]=lowByte(4004);
+    Modbus_Master_Write(header,4);
+    Modbus_Master_Write(data,512);
 }

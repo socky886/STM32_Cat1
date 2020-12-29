@@ -102,7 +102,7 @@
 
 #define SYSTEM_RUN_MODE 200  //系统运行模式
 #define RESERVE1_ADDRESS 201 //预留
-#define RESERVE1_ADDRESS 202 //预留
+#define RESERVE2_ADDRESS 202 //预留
 
 //read-write register is used to upgrade the application, support 0x03,0x10 function code
 #define FIRMWRE_SIZE 4000            //APP大小
