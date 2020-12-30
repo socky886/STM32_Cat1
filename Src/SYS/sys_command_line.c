@@ -78,6 +78,11 @@ const COMMAND_S CLI_Cmd[] = {
     /* application cmd start */ 
     //{"led",           CLI_Cmd_LED,          CLI_LED_Init,   CLI_LED},
     {"junfeng",           "junfeng is a good boy\n",          junfeng_pInit,   junfeng_pFun},
+    {"writeReg",           "write reg\n",          NULL,   WriteReg_pFun},
+    {"ReadReg",           "read reg\n",          NULL,   ReadReg_pFun},
+    {"ReadInputReg",           "read input reg\n",          NULL,   ReadInputReg_pFun},
+    {"otaneed",           "firmwar ota\n",          NULL,   Fireware_OTA_pFun},
+
 };
 
 // additional  20200403

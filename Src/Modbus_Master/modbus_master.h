@@ -2,10 +2,10 @@
 #ifndef __MODBUS_MASTER_H
 #define __MODBUS_MASTER_H
   /* Includes ------------------------------------------------------------------*/
-//´¦ÀíÆ÷ÓÐ¹ØµÄÍ·ÎÄ¼þ
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¹Øµï¿½Í·ï¿½Ä¼ï¿½
 #include "bsp_board.h"
 /* USER CODE BEGIN Includes */
-//modbus´¦Àí¹ý³ÌÖÐÊ¹ÓÃµ½µÄÍ·ÎÄ¼þ
+//modbusï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½Ãµï¿½ï¿½ï¿½Í·ï¿½Ä¼ï¿½
 #include "crc16.h"
 #include "word.h"
 /* USER CODE END Includes */
@@ -37,8 +37,10 @@ uint8_t ModbusMaster_writeSingleCoil(uint8_t SlaveID,uint16_t u16WriteAddress, u
 uint8_t ModbusMaster_writeSingleRegister(uint8_t SlaveID,uint16_t u16WriteAddress,uint16_t u16WriteValue);
 uint8_t ModbusMaster_writeMultipleCoils(uint8_t SlaveID,uint16_t u16WriteAddress,uint16_t u16BitQty);
 uint8_t ModbusMaster_writeMultipleRegisters(uint8_t SlaveID,uint16_t u16WriteAddress,uint16_t u16WriteQty);
+//uint8_t ModbusMaster_writeMultipleRegisters1(uint8_t SlaveID,uint16_t u16WriteAddress,uint16_t u16WriteQty);
 uint8_t ModbusMaster_maskWriteRegister(uint8_t SlaveID,uint16_t u16WriteAddress,uint16_t u16AndMask, uint16_t u16OrMask);
 uint8_t ModbusMaster_readWriteMultipleRegisters(uint8_t SlaveID,uint16_t u16ReadAddress,uint16_t u16ReadQty, uint16_t u16WriteAddress, uint16_t u16WriteQty);
+void weijunfeng_printf_buffer();
 
 #endif 
 /********END OF FILE****/

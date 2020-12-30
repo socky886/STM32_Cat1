@@ -44,4 +44,12 @@ uint8_t Dut_Set_SingleCoil(uint16_t address,uint8_t onoff);
 uint8_t Dut_Set_Multi_HoldReg(void);
 uint8_t Dut_Get_Multi_HoldReg(void);
 uint8_t Dut_OTA_Firmware(void);
+uint32_t CalcCRC32(uint8_t * ptr, uint32_t startIndex, uint32_t len,int32_t seed);
+uint8_t Dut_Crc_test(void);
+
+//below function is used to test the cli
+uint8_t WriteReg_pFun(void * p, uint8_t len);
+uint8_t ReadReg_pFun(void * p, uint8_t len);
+uint8_t ReadInputReg_pFun(void * p, uint8_t len);
+uint8_t Fireware_OTA_pFun(void * p, uint8_t len);
 #endif // !defined(AFX_DUT_COM_H__89824BCE_A958_43E4_BED7_DFF7CB6E6E38__INCLUDED_)

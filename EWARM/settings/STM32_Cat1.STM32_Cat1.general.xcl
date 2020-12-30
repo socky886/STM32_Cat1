@@ -1,14 +1,14 @@
-"C:\IAR Systems\Embedded Workbench 7.5\arm\bin\armproc.dll" 
+"D:\IAR Systems\Embedded Workbench 7.5\arm\bin\armproc.dll" 
 
-"C:\IAR Systems\Embedded Workbench 7.5\arm\bin\armstlink2.dll" 
+"D:\IAR Systems\Embedded Workbench 7.5\arm\bin\armstlink2.dll" 
 
-"D:\huimeng\newtimeda\dut\stm32_cat1\EWARM\STM32_Cat1\Exe\STM32_Cat1.out" 
+"E:\dut\stm32_cat1\EWARM\STM32_Cat1\Exe\STM32_Cat1.out" 
 
---plugin "C:\IAR Systems\Embedded Workbench 7.5\arm\bin\armbat.dll" 
+--plugin "D:\IAR Systems\Embedded Workbench 7.5\arm\bin\armbat.dll" 
 
---device_macro "C:\IAR Systems\Embedded Workbench 7.5\arm\config\debugger\ST\STM32L4xx.dmac" 
+--device_macro "D:\IAR Systems\Embedded Workbench 7.5\arm\config\debugger\ST\STM32L4xx.dmac" 
 
---flash_loader "C:\IAR Systems\Embedded Workbench 7.5\arm\config\flashloader\ST\FlashSTM32L4xxxG.board" 
+--flash_loader "D:\IAR Systems\Embedded Workbench 7.5\arm\config\flashloader\ST\FlashSTM32L4xxxG.board" 
 
 
 

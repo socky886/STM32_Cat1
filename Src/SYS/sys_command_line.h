@@ -107,7 +107,7 @@ enum {
 
 /* assert---------------------------------------------------------------BEGIN */
 
-/* #val£ºÊ¹ÓÃ#°Ñºê²ÎÊý±äÎªÒ»¸ö×Ö·û´®,ÓÃ##°ÑÁ½¸öºê²ÎÊýÌùºÏÔÚÒ»Æð */
+/* #valï¿½ï¿½Ê¹ï¿½ï¿½#ï¿½Ñºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÎªÒ»ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½,ï¿½ï¿½##ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ */
 #define ASSERT(val)                                                     \
 if (!(val))                                                             \
 {                                                                       \
@@ -283,6 +283,10 @@ __packed typedef struct {
 // additional  20200403
 uint8_t junfeng_pInit(void);
 extern uint8_t junfeng_pFun(void * p, uint8_t len);
+extern uint8_t WriteReg_pFun(void * p, uint8_t len);
+extern uint8_t ReadReg_pFun(void * p, uint8_t len);
+extern uint8_t ReadInputReg_pFun(void * p, uint8_t len);
+extern uint8_t Fireware_OTA_pFun(void * p, uint8_t len);
 
 extern void cli_init(uint32_t baud);
 extern void cli_task(void);

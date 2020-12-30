@@ -14,13 +14,13 @@
  
     uint8_t  _u8MBSlave;                                         ///< Modbus slave (1..255) initialized in begin()
     //static const uint8_t ku8MaxBufferSize                = 64;   ///< size of response/transmit buffers  
-    #define   ku8MaxBufferSize 64
+    #define   ku8MaxBufferSize 100
     uint16_t _u16ReadAddress;                                    ///< slave register from which to read
     uint16_t _u16ReadQty;                                        ///< quantity of words to read
     uint16_t _u16ResponseBuffer[ku8MaxBufferSize];               ///< buffer to store Modbus slave response; read via GetResponseBuffer()
     uint16_t _u16WriteAddress;                                   ///< slave register to which to write
     uint16_t _u16WriteQty;                                       ///< quantity of words to write
-    uint16_t _u16TransmitBuffer[ku8MaxBufferSize];               ///< buffer containing data to transmit to Modbus slave; set via SetTransmitBuffer()
+    uint16_t _u16TransmitBuffer[100];               ///< buffer containing data to transmit to Modbus slave; set via SetTransmitBuffer()
     uint16_t* txBuffer; // from Wire.h -- need to clean this up Rx
     uint8_t _u8TransmitBufferIndex;
     uint16_t u16TransmitBufferLength;
@@ -49,6 +49,7 @@
     #define ku8MBReadInputRegisters  0x04
     #define ku8MBWriteSingleRegister  0x06
     #define ku8MBWriteMultipleRegisters  0x10
+    #define ku8MBWriteMultipleRegisters1  0x20
     #define ku8MBMaskWriteRegister  0x16
     #define ku8MBReadWriteMultipleRegisters  0x17
     
@@ -69,7 +70,7 @@
   // _u8MBSlave = slave;
 	 _u8TransmitBufferIndex = 0;
    u16TransmitBufferLength = 0;
-	 //³õÊ¼»¯»·ÐÎ¶ÓÁÐ
+	 //ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½Î¶ï¿½ï¿½ï¿½
 	 Modbus_Master_RB_Initialize();
  }
  
@@ -228,6 +229,15 @@ void ModbusMaster_clearTransmitBuffer()
   }
 }
 
+void weijunfeng_printf_buffer()
+{
+  int i;
+  for ( i = 0; i < 65; i++)
+  {
+    printf("%d tx buffer is %04x\n",4003+i,_u16TransmitBuffer[i]);
+  }
+  
+}
 
 /* _____PRIVATE FUNCTIONS____________________________________________________ */
 /**
@@ -245,7 +255,8 @@ Sequence:
 */
 uint8_t ModbusMaster_ModbusMasterTransaction(uint8_t u8MBFunction)
 {
-  uint8_t u8ModbusADU[256];
+  //uint8_t u8ModbusADU[256];
+  uint8_t u8ModbusADU[150];
   uint8_t u8ModbusADUSize = 0;
   uint8_t i, u8Qty;
   uint16_t u16CRC;
@@ -278,6 +289,7 @@ uint8_t ModbusMaster_ModbusMasterTransaction(uint8_t u8MBFunction)
     case ku8MBWriteMultipleCoils:
     case ku8MBWriteSingleRegister:
     case ku8MBWriteMultipleRegisters:
+    case ku8MBWriteMultipleRegisters1:
     case ku8MBReadWriteMultipleRegisters:
       u8ModbusADU[u8ModbusADUSize++] = highByte(_u16WriteAddress);
       u8ModbusADU[u8ModbusADUSize++] = lowByte(_u16WriteAddress);
@@ -323,12 +335,24 @@ uint8_t ModbusMaster_ModbusMasterTransaction(uint8_t u8MBFunction)
       u8ModbusADU[u8ModbusADUSize++] = lowByte(_u16WriteQty << 1);
       
       for (i = 0; i < lowByte(_u16WriteQty); i++)
+      // for (i = 0; i < (_u16WriteQty); i++) //weijunfeng added 20201230
       {
         u8ModbusADU[u8ModbusADUSize++] = highByte(_u16TransmitBuffer[i]);
         u8ModbusADU[u8ModbusADUSize++] = lowByte(_u16TransmitBuffer[i]);
       }
       break;
-      
+    // case ku8MBWriteMultipleRegisters1: //weijunfeng 20201230
+    //   u8ModbusADU[u8ModbusADUSize++] = highByte(_u16WriteQty);
+    //   u8ModbusADU[u8ModbusADUSize++] = lowByte(_u16WriteQty);
+    //   u8ModbusADU[u8ModbusADUSize++] = lowByte(_u16WriteQty << 1);
+
+    //   for (i = 0; i < _u16WriteQty; i++)
+    //   {
+    //     u8ModbusADU[u8ModbusADUSize++] = highByte(_u16TransmitBuffer[i]);
+    //     u8ModbusADU[u8ModbusADUSize++] = lowByte(_u16TransmitBuffer[i]);
+    //   }
+    //   break;
+
     case ku8MBMaskWriteRegister:
       u8ModbusADU[u8ModbusADUSize++] = highByte(_u16TransmitBuffer[0]);
       u8ModbusADU[u8ModbusADUSize++] = lowByte(_u16TransmitBuffer[0]);
@@ -350,7 +374,7 @@ uint8_t ModbusMaster_ModbusMasterTransaction(uint8_t u8MBFunction)
 	// flush receive buffer before transmitting request
   Modbus_Master_Rece_Flush();
 	
-	// transmit request RS485½Ó¿ÚÊÇÐèÒªÃ¿´Î·¢ËÍÇ°¸Ä±ä½Ó¿ÚµÄÄ£Ê½£¬²»È»»áÇ¯×¡×ÜÏß¶ø²»ÄÜ·¢ËÍµÈÔ­Òò
+	// transmit request RS485ï¿½Ó¿ï¿½ï¿½ï¿½ï¿½ï¿½ÒªÃ¿ï¿½Î·ï¿½ï¿½ï¿½Ç°ï¿½Ä±ï¿½Ó¿Úµï¿½Ä£Ê½ï¿½ï¿½ï¿½ï¿½È»ï¿½ï¿½Ç¯×¡ï¿½ï¿½ï¿½ß¶ï¿½ï¿½ï¿½ï¿½Ü·ï¿½ï¿½Íµï¿½Ô­ï¿½ï¿½
 	/*
   if (_preTransmission)
   {
@@ -358,7 +382,7 @@ uint8_t ModbusMaster_ModbusMasterTransaction(uint8_t u8MBFunction)
   }
 	*/
 	
-	//´®¿Ú·¢ËÍÊý¾Ý
+	//ï¿½ï¿½ï¿½Ú·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	Modbus_Master_Write(u8ModbusADU,u8ModbusADUSize);
 	u8ModbusADUSize = 0;
 	/*
@@ -425,6 +449,7 @@ uint8_t ModbusMaster_ModbusMasterTransaction(uint8_t u8MBFunction)
         case ku8MBWriteMultipleCoils:
         case ku8MBWriteSingleRegister:
         case ku8MBWriteMultipleRegisters:
+        //case ku8MBWriteMultipleRegisters1://weijunfeng added 20201230
           u8BytesLeft = 3;
           break;
           
@@ -733,6 +758,28 @@ uint8_t ModbusMaster_writeMultipleRegisters(uint8_t SlaveID,uint16_t u16WriteAdd
   _u16WriteQty = u16WriteQty;
   return ModbusMaster_ModbusMasterTransaction(ku8MBWriteMultipleRegisters);
 }
+
+/**
+Modbus function 0x10 Write Multiple Registers.
+
+This function code is used to write a block of contiguous registers (1 
+to 123 registers) in a remote device.
+
+The requested written values are specified in the transmit buffer. Data 
+is packed as one word per register.
+@param u16WriteAddress address of the holding register (0x0000..0xFFFF)
+@param u16WriteQty quantity of holding registers to write (1..123, enforced by remote device)
+@return 0 on success; exception number on failure
+@ingroup register
+*/
+// uint8_t ModbusMaster_writeMultipleRegisters1(uint8_t SlaveID,uint16_t u16WriteAddress,
+//   uint16_t u16WriteQty)
+// {
+// 	_u8MBSlave = SlaveID;
+//   _u16WriteAddress = u16WriteAddress;
+//   _u16WriteQty = u16WriteQty;
+//   return ModbusMaster_ModbusMasterTransaction(ku8MBWriteMultipleRegisters1);
+// }
 
 // new version based on Wire.h
 

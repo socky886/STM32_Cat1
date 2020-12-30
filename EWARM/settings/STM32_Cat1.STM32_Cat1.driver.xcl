@@ -6,7 +6,7 @@
 
 "-p" 
 
-"C:\IAR Systems\Embedded Workbench 7.5\arm\CONFIG\debugger\ST\STM32L476RG.ddf" 
+"D:\IAR Systems\Embedded Workbench 7.5\arm\CONFIG\debugger\ST\STM32L476RG.ddf" 
 
 "--drv_verify_download" 
 
